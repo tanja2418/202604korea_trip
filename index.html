@@ -1,345 +1,1479 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🌸 2026 首爾櫻花旅行看板 (手動記帳版)</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
-    <style>
-        :root {
-            --cherry-pink: #ffb7c5;
-            --soft-pink: #ffe4e8;
-            --dark-pink: #d63384;
-            --bg-white: #fffafb;
-            --card-shadow: 0 4px 12px rgba(255, 183, 197, 0.4);
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>🌸 2026 首爾櫻花旅行看板 Pro</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+  <style>
+    :root {
+      --sakura-50: #fff8fb;
+      --sakura-100: #ffeef4;
+      --sakura-200: #ffdbe7;
+      --sakura-300: #ffc5d8;
+      --sakura-400: #f7a7c3;
+      --sakura-500: #eb83ac;
+      --sakura-600: #d95f93;
+      --sakura-700: #bf4578;
+      --sakura-800: #8f3359;
+      --rose: #7b2d49;
+      --ink: #4d4250;
+      --muted: #7c7280;
+      --line: rgba(217,95,147,.18);
+      --shadow: 0 12px 30px rgba(221, 123, 162, .18);
+      --radius: 20px;
+    }
 
-        body {
-            font-family: 'Noto Sans TC', sans-serif;
-            background-color: var(--bg-white);
-            color: #4a4a4a;
-            margin: 0;
-            padding: 15px;
-            padding-bottom: 50px;
-        }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
 
-        header {
-            text-align: center;
-            padding: 15px;
-            background: white;
-            border-radius: 15px;
-            box-shadow: var(--card-shadow);
-            margin-bottom: 20px;
-            border: 2px solid var(--cherry-pink);
-        }
+    body {
+      margin: 0;
+      font-family: 'Noto Sans TC', sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top right, rgba(255,199,220,.45), transparent 25%),
+        linear-gradient(180deg, #fffdfd 0%, var(--sakura-50) 100%);
+      padding: 18px;
+    }
 
-        h1 { color: var(--dark-pink); margin: 0; font-size: 1.4rem; }
-        .sub-header { font-size: 0.85rem; color: #888; margin-top: 5px; }
+    .shell {
+      width: min(1240px, 100%);
+      margin: 0 auto;
+    }
 
-        /* 頁籤切換 */
-        .tabs {
-            display: flex;
-            justify-content: space-around;
-            gap: 5px;
-            margin-bottom: 15px;
-            overflow-x: auto;
-        }
+    .hero {
+      background: rgba(255,255,255,.9);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 10px;
+      z-index: 20;
+      margin-bottom: 18px;
+    }
 
-        .tab-btn {
-            padding: 8px 15px;
-            border: none;
-            background: white;
-            border-radius: 20px;
-            cursor: pointer;
-            box-shadow: var(--card-shadow);
-            font-weight: bold;
-            color: var(--dark-pink);
-            white-space: nowrap;
-        }
+    .hero-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
 
-        .tab-btn.active {
-            background: var(--cherry-pink);
-            color: white;
-        }
+    .title {
+      margin: 0;
+      font-size: clamp(1.5rem, 4vw, 2.35rem);
+      color: var(--rose);
+      letter-spacing: .02em;
+    }
 
-        /* 行程卡片 */
-        .day-content { display: none; }
-        .day-content.active { display: block; }
+    .hero p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      line-height: 1.65;
+    }
 
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 12px;
-            box-shadow: var(--card-shadow);
-            display: flex;
-            border-left: 6px solid var(--cherry-pink);
-        }
+    .pill-row, .tab-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
 
-        .time {
-            font-weight: bold;
-            width: 70px;
-            color: var(--dark-pink);
-            font-size: 0.9rem;
-        }
+    .tab-scroll {
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
 
-        .info { flex: 1; }
-        .info h3 { margin: 0 0 5px 0; font-size: 1rem; }
-        .info p { margin: 0; font-size: 0.85rem; color: #666; line-height: 1.4; }
+    .pill, .tab-btn, .ghost-btn, .primary-btn, .small-btn, .danger-btn {
+      border: 0;
+      cursor: pointer;
+      font-family: inherit;
+      transition: .2s ease;
+    }
 
-        .links {
-            display: flex;
-            gap: 8px;
-            margin-top: 10px;
-        }
+    .pill {
+      background: var(--sakura-100);
+      color: var(--rose);
+      padding: 10px 14px;
+      border-radius: 999px;
+      font-size: .9rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
 
-        .link-btn {
-            text-decoration: none;
-            font-size: 0.75rem;
-            color: white;
-            background: #4facfe;
-            padding: 4px 10px;
-            border-radius: 15px;
-        }
+    .tab-btn {
+      background: #fff;
+      color: var(--rose);
+      padding: 12px 18px;
+      border-radius: 999px;
+      box-shadow: 0 6px 16px rgba(235,131,172,.12);
+      font-weight: 800;
+      white-space: nowrap;
+      border: 1px solid rgba(217,95,147,.08);
+      flex: 0 0 auto;
+    }
 
-        /* 購物記帳區 */
-        .shopping-section {
-            background: white;
-            padding: 15px;
-            border-radius: 15px;
-            box-shadow: var(--card-shadow);
-            margin-top: 30px;
-        }
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--sakura-500), var(--sakura-700));
+      color: white;
+      transform: translateY(-1px);
+    }
 
-        .shopping-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
+    .layout {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 18px;
+      align-items: start;
+    }
 
-        /* 表格手機優化 */
-        .table-container {
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-        }
+    .panel {
+      background: rgba(255,255,255,.94);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
 
-        table {
-            width: 100%;
-            min-width: 500px;
-            border-collapse: collapse;
-        }
+    .section-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 18px 18px 0;
+      flex-wrap: wrap;
+    }
 
-        th { background: var(--soft-pink); font-size: 0.85rem; padding: 10px; text-align: left; }
-        td { border-bottom: 1px dotted var(--cherry-pink); padding: 8px; }
+    .section-head h2, .section-head h3 {
+      margin: 0;
+      color: var(--rose);
+    }
 
-        input, select {
-            padding: 6px;
-            border: 1px solid #eee;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            width: 90%;
-        }
+    .section-sub {
+      color: var(--muted);
+      font-size: .92rem;
+      margin: 6px 0 0;
+      line-height: 1.6;
+    }
 
-        .add-btn {
-            background: var(--dark-pink);
-            color: white;
-            border: none;
-            padding: 10px;
-            width: 100%;
-            border-radius: 8px;
-            margin-top: 15px;
-            font-weight: bold;
-        }
+    .day-content { display: none; padding: 16px; }
+    .day-content.active { display: block; }
 
-        .total-box {
-            text-align: right;
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: var(--dark-pink);
-            margin-top: 15px;
-            padding: 10px;
-            background: var(--soft-pink);
-            border-radius: 8px;
-        }
+    .day-toolbar {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 12px;
+    }
 
-        .clear-btn {
-            font-size: 0.7rem;
-            background: #ccc;
-            color: white;
-            border: none;
-            padding: 4px 8px;
-            border-radius: 4px;
-        }
-    </style>
+    .sortable-list { display: grid; gap: 14px; }
+
+    .card {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(255,244,248,.9));
+      border-radius: 20px;
+      padding: 16px;
+      position: relative;
+    }
+
+    .drag-handle {
+      position: absolute;
+      right: 14px;
+      top: 14px;
+      color: #c48aa4;
+      font-size: 1rem;
+      cursor: grab;
+      user-select: none;
+    }
+
+    .card-top {
+      display: grid;
+      grid-template-columns: 110px 1fr;
+      gap: 14px;
+      align-items: start;
+      padding-right: 28px;
+    }
+
+    .time-badge {
+      background: linear-gradient(135deg, var(--sakura-200), #fff);
+      color: var(--sakura-800);
+      border: 1px solid rgba(191,69,120,.12);
+      border-radius: 16px;
+      padding: 12px;
+      font-weight: 800;
+      text-align: center;
+      line-height: 1.35;
+    }
+
+    .card h3 {
+      margin: 0;
+      color: var(--rose);
+      font-size: 1.08rem;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 8px 0;
+    }
+
+    .tag {
+      background: var(--sakura-100);
+      color: var(--sakura-800);
+      font-size: .78rem;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-weight: 700;
+    }
+
+    .card p {
+      margin: 8px 0 0;
+      color: var(--ink);
+      line-height: 1.65;
+    }
+
+    .minor {
+      color: var(--muted);
+      font-size: .92rem;
+      line-height: 1.6;
+    }
+
+    .route-box, .map-box, .store-box, .note-box {
+      margin-top: 12px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.8);
+      border: 1px dashed rgba(217,95,147,.25);
+      padding: 12px;
+    }
+
+    .map-box iframe {
+      width: 100%;
+      height: 220px;
+      border: 0;
+      border-radius: 14px;
+      background: #f5f5f5;
+    }
+
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .primary-btn, .ghost-btn, .small-btn, .danger-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: .88rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .primary-btn {
+      background: linear-gradient(135deg, var(--sakura-500), var(--sakura-700));
+      color: #fff;
+      box-shadow: 0 10px 18px rgba(217,95,147,.22);
+    }
+
+    .ghost-btn {
+      background: var(--sakura-100);
+      color: var(--rose);
+    }
+
+    .small-btn {
+      background: #fff;
+      color: var(--rose);
+      border: 1px solid rgba(217,95,147,.15);
+      padding: 8px 12px;
+    }
+
+    .danger-btn {
+      background: #fff1f4;
+      color: #b33a63;
+      border: 1px solid rgba(179,58,99,.14);
+      padding: 8px 12px;
+    }
+
+    .primary-btn:hover, .ghost-btn:hover, .small-btn:hover, .danger-btn:hover, .tab-btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(.99);
+    }
+
+    .grid-two {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      padding: 18px;
+    }
+
+    .shopping-section, .store-section {
+      padding: 0 0 18px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      padding: 0 18px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    table {
+      width: 100%;
+      min-width: 820px;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 12px 10px;
+      text-align: left;
+      border-bottom: 1px solid rgba(217,95,147,.12);
+      vertical-align: top;
+    }
+
+    th {
+      background: var(--sakura-100);
+      color: var(--rose);
+      font-size: .9rem;
+      position: sticky;
+      top: 0;
+    }
+
+    td {
+      font-size: .92rem;
+      background: rgba(255,255,255,.75);
+    }
+
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid rgba(217,95,147,.16);
+      background: #fff;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font: inherit;
+      color: var(--ink);
+      outline: none;
+    }
+
+    textarea {
+      min-height: 92px;
+      resize: vertical;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--sakura-500);
+      box-shadow: 0 0 0 4px rgba(235,131,172,.14);
+    }
+
+    .action-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 18px;
+      flex-wrap: wrap;
+    }
+
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      padding: 0 18px;
+    }
+
+    .summary-card {
+      border-radius: 18px;
+      padding: 14px;
+      background: linear-gradient(180deg, #fff, var(--sakura-100));
+      border: 1px solid rgba(217,95,147,.14);
+    }
+
+    .summary-card .label {
+      font-size: .82rem;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .summary-card .value {
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: var(--rose);
+    }
+
+    .helper {
+      color: var(--muted);
+      font-size: .84rem;
+      line-height: 1.6;
+    }
+
+    .store-list {
+      list-style: none;
+      padding: 18px;
+      margin: 0;
+      display: grid;
+      gap: 10px;
+    }
+
+    .store-item {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 10px;
+      align-items: center;
+      padding: 12px;
+      border-radius: 16px;
+      border: 1px solid rgba(217,95,147,.14);
+      background: linear-gradient(180deg, #fff, rgba(255,243,247,.9));
+    }
+
+    .store-item .drag {
+      color: #c48aa4;
+      cursor: grab;
+      font-size: 1rem;
+      user-select: none;
+    }
+
+    .store-main {
+      display: grid;
+      gap: 5px;
+    }
+
+    .store-main strong {
+      color: var(--rose);
+    }
+
+    .store-main span {
+      color: var(--muted);
+      font-size: .88rem;
+    }
+
+    .check {
+      width: 22px;
+      height: 22px;
+      accent-color: var(--sakura-600);
+    }
+
+    .store-item.done {
+      opacity: .62;
+    }
+
+    .store-item.done .store-main strong,
+    .store-item.done .store-main span {
+      text-decoration: line-through;
+    }
+
+    .new-store {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto;
+      gap: 10px;
+      padding: 0 18px 18px;
+    }
+
+    .delete-btn {
+      border: 0;
+      background: #fff;
+      color: #c65f84;
+      cursor: pointer;
+      font-weight: 800;
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(217,95,147,.12);
+    }
+
+    .muted-block {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 16px;
+      background: rgba(255,245,248,.9);
+      color: var(--muted);
+      font-size: .88rem;
+      line-height: 1.65;
+    }
+
+    .footer-note {
+      text-align: center;
+      color: var(--muted);
+      font-size: .85rem;
+      padding: 18px 12px 4px;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(70, 41, 54, .45);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 50;
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-card {
+      width: min(860px, 100%);
+      max-height: 92vh;
+      overflow: auto;
+      background: #fff;
+      border-radius: 24px;
+      box-shadow: 0 24px 60px rgba(0,0,0,.16);
+      border: 1px solid rgba(217,95,147,.18);
+    }
+
+    .modal-head {
+      position: sticky;
+      top: 0;
+      background: #fff;
+      padding: 18px 18px 0;
+      z-index: 2;
+    }
+
+    .modal-body {
+      padding: 18px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .field {
+      display: grid;
+      gap: 6px;
+    }
+
+    .field label {
+      font-size: .88rem;
+      font-weight: 700;
+      color: var(--rose);
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      padding: 0 18px 18px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 1100px) {
+      .layout, .grid-two {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      body {
+        padding: 12px;
+      }
+
+      .hero {
+        padding: 18px;
+        position: static;
+      }
+
+      .card-top {
+        grid-template-columns: 1fr;
+      }
+
+      .time-badge {
+        width: fit-content;
+      }
+
+      .summary-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .new-store,
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .action-row,
+      .day-toolbar,
+      .btn-row,
+      .modal-actions {
+        align-items: stretch;
+      }
+
+      .action-row > *,
+      .day-toolbar > *,
+      .btn-row > *,
+      .modal-actions > * {
+        width: 100%;
+      }
+
+      .btn-row a,
+      .btn-row button {
+        text-align: center;
+      }
+
+      .pill-row {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding-bottom: 4px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .hero-top {
+        flex-direction: column;
+      }
+
+      .tab-row {
+        flex-wrap: nowrap;
+      }
+
+      .card {
+        padding: 14px;
+      }
+
+      .section-head {
+        padding: 16px 16px 0;
+      }
+
+      .day-content {
+        padding: 12px;
+      }
+
+      .grid-two {
+        padding: 14px;
+      }
+
+      .table-wrap {
+        padding: 0 14px;
+      }
+
+      .action-row {
+        padding: 14px;
+      }
+
+      .summary-grid {
+        padding: 0 14px;
+      }
+
+      .store-list {
+        padding: 14px;
+      }
+
+      .new-store {
+        padding: 0 14px 14px;
+      }
+    }
+  </style>
 </head>
 <body>
-
-<header>
-    <h1>🌸 首爾櫻花旅行 2026</h1>
-    <div class="sub-header">Grid Inn Hotel | 匯率: 1 KRW ≈ 0.024 TWD</div>
-</header>
-
-<div class="tabs">
-    <button class="tab-btn active" onclick="showDay(1)">D1 抵達</button>
-    <button class="tab-btn" onclick="showDay(2)">D2 江南</button>
-    <button class="tab-btn" onclick="showDay(3)">D3 弘大</button>
-    <button class="tab-btn" onclick="showDay(4)">D4 追星</button>
-</div>
-
-<div id="day1" class="day-content active">
-    <div class="card">
-        <div class="time">19:05</div>
-        <div class="info">
-            <h3>仁川機場 ➔ 飯店</h3>
-            <p>機場巴士 6002 至鐘路三街。房號記在備忘錄中。</p>
-            <div class="links"><a href="https://naver.me/5O5vLlyB" class="link-btn">Naver Map</a></div>
+  <div class="shell">
+    <header class="hero">
+      <div class="hero-top">
+        <div>
+          <h1 class="title">🌸 2026 首爾櫻花旅行看板</h1>
+          <p>
+            第 1–4 天行程總覽、內嵌地圖、路線與旅行時間、景點資訊、購物商店清單與購物記帳。<br>
+            加入響應式設計、可拖曳排序、可新增 / 編輯 / 刪除行程卡片。
+          </p>
         </div>
-    </div>
-</div>
-
-<div id="day2" class="day-content">
-    <div class="card">
-        <div class="time">14:00</div>
-        <div class="info">
-            <h3>T1 Cafe & Arena</h3>
-            <p>朝聖 T1！記得帶應援物。</p>
-            <div class="links"><a href="https://naver.me/GXApFSiE" class="link-btn">Naver Map</a></div>
+        <div class="pill-row">
+          <div class="pill">住宿：Grid Inn Hotel</div>
+          <div class="pill">即時匯率：1 KRW ≈ <span id="rateLabel">0.021453</span> TWD</div>
+          <div class="pill">自動儲存：已啟用</div>
         </div>
-    </div>
-    <div class="card">
-        <div class="time">16:00</div>
-        <div class="info">
-            <h3>Theia Clinic</h3>
-            <p>醫美行程，預計耗時 3 小時。</p>
+      </div>
+
+      <div class="tab-scroll">
+        <div class="tab-row">
+          <button class="tab-btn active" data-day="1">Day 1 抵達</button>
+          <button class="tab-btn" data-day="2">Day 2 江南 / 醫美</button>
+          <button class="tab-btn" data-day="3">Day 3 弘大 / 購物</button>
+          <button class="tab-btn" data-day="4">Day 4 追星 / 機場</button>
         </div>
-    </div>
-</div>
+      </div>
+    </header>
 
-<section class="shopping-section">
-    <div class="shopping-header">
-        <h2 style="font-size: 1.1rem; margin: 0;">🛍️ 購物記帳 (自動儲存)</h2>
-        <button class="clear-btn" onclick="clearAll()">重置清單</button>
-    </div>
-    
-    <div class="table-container">
-        <table id="shoppingTable">
-            <thead>
-                <tr>
-                    <th width="30%">項目</th>
-                    <th width="20%">支付</th>
-                    <th width="15%">退稅</th>
-                    <th width="20%">KRW</th>
-                    <th width="15%">TWD</th>
-                </tr>
-            </thead>
-            <tbody id="shoppingBody">
-                </tbody>
-        </table>
-    </div>
-    
-    <button class="add-btn" onclick="addRow()">➕ 新增購物項目</button>
-    
-    <div class="total-box">
-        總計：NT$ <span id="grandTotal">0</span>
-    </div>
-</section>
+    <div class="layout">
+      <section class="panel">
+        <div class="section-head">
+          <div>
+            <h2>每日行程表</h2>
+            <p class="section-sub">每張卡片都可拖曳排序，並可直接新增、編輯、刪除。行程資料會自動儲存在瀏覽器。</p>
+          </div>
+        </div>
 
-<script>
-    const exchangeRate = 0.024;
+        <div id="day1" class="day-content active">
+          <div class="day-toolbar">
+            <button class="primary-btn" onclick="openEditor(1)">＋ 新增 Day 1 行程</button>
+          </div>
+          <div class="sortable-list itinerary-list" id="itinerary-day1"></div>
+        </div>
 
-    // 初始化載入
-    window.onload = function() {
-        loadData();
-        if (document.querySelectorAll('#shoppingBody tr').length === 0) {
-            addRow(); // 預設一行
-        }
+        <div id="day2" class="day-content">
+          <div class="day-toolbar">
+            <button class="primary-btn" onclick="openEditor(2)">＋ 新增 Day 2 行程</button>
+          </div>
+          <div class="sortable-list itinerary-list" id="itinerary-day2"></div>
+        </div>
+
+        <div id="day3" class="day-content">
+          <div class="day-toolbar">
+            <button class="primary-btn" onclick="openEditor(3)">＋ 新增 Day 3 行程</button>
+          </div>
+          <div class="sortable-list itinerary-list" id="itinerary-day3"></div>
+        </div>
+
+        <div id="day4" class="day-content">
+          <div class="day-toolbar">
+            <button class="primary-btn" onclick="openEditor(4)">＋ 新增 Day 4 行程</button>
+          </div>
+          <div class="sortable-list itinerary-list" id="itinerary-day4"></div>
+        </div>
+      </section>
+
+      <aside class="panel">
+        <div class="grid-two">
+          <section class="shopping-section">
+            <div class="section-head">
+              <div>
+                <h3>🛍️ 購物記帳</h3>
+                <p class="section-sub">包含項目名稱、日期、付款方式、退稅狀態、韓元 / 台幣與即時匯率。</p>
+              </div>
+            </div>
+
+            <div class="action-row">
+              <div class="helper">
+                匯率可手動修改，所有金額會即時換算並自動儲存到瀏覽器。
+              </div>
+              <button class="small-btn" onclick="clearShopping()">清空記帳</button>
+            </div>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>項目名稱</th>
+                    <th>日期</th>
+                    <th>付款方式</th>
+                    <th>退稅狀態</th>
+                    <th>金額 (KRW)</th>
+                    <th>金額 (TWD)</th>
+                    <th>刪除</th>
+                  </tr>
+                </thead>
+                <tbody id="shoppingBody"></tbody>
+              </table>
+            </div>
+
+            <div class="action-row">
+              <button class="primary-btn" onclick="addShoppingRow()">＋ 新增購物項目</button>
+              <div style="min-width: 220px;">
+                <label class="helper" for="exchangeRateInput">即時匯率（1 KRW = TWD）</label>
+                <input id="exchangeRateInput" type="number" step="0.000001" value="0.0214532" oninput="updateExchangeRate(this.value)">
+              </div>
+            </div>
+
+            <div class="summary-grid">
+              <div class="summary-card">
+                <div class="label">總筆數</div>
+                <div class="value" id="totalItems">0</div>
+              </div>
+              <div class="summary-card">
+                <div class="label">總計 KRW</div>
+                <div class="value" id="totalKRW">0</div>
+              </div>
+              <div class="summary-card">
+                <div class="label">總計 TWD</div>
+                <div class="value" id="totalTWD">0</div>
+              </div>
+            </div>
+          </section>
+
+          <section class="store-section">
+            <div class="section-head">
+              <div>
+                <h3>🧾 購物商店清單</h3>
+                <p class="section-sub">可勾選完成、拖曳排序，也可新增自己的商店。</p>
+              </div>
+            </div>
+
+            <ul class="store-list" id="storeList">
+              <li class="store-item" data-id="store-1">
+                <span class="drag">⋮⋮</span>
+                <label class="store-main">
+                  <strong>Olive Young 弘大 / 明洞 / 江南分店</strong>
+                  <span>美妝、保養、藥妝補貨</span>
+                </label>
+                <input class="check" type="checkbox" onchange="toggleStoreDone(this)">
+              </li>
+              <li class="store-item" data-id="store-2">
+                <span class="drag">⋮⋮</span>
+                <label class="store-main">
+                  <strong>JO &amp; DAWSON</strong>
+                  <span>選物、服飾、生活風格商品</span>
+                </label>
+                <input class="check" type="checkbox" onchange="toggleStoreDone(this)">
+              </li>
+              <li class="store-item" data-id="store-3">
+                <span class="drag">⋮⋮</span>
+                <label class="store-main">
+                  <strong>T1 Shop / T1 Base Camp</strong>
+                  <span>戰隊周邊、追星採買</span>
+                </label>
+                <input class="check" type="checkbox" onchange="toggleStoreDone(this)">
+              </li>
+              <li class="store-item" data-id="store-4">
+                <span class="drag">⋮⋮</span>
+                <label class="store-main">
+                  <strong>快閃店 / 活動場販</strong>
+                  <span>限定周邊、特典與活動商品</span>
+                </label>
+                <input class="check" type="checkbox" onchange="toggleStoreDone(this)">
+              </li>
+            </ul>
+
+            <div class="new-store">
+              <input id="newStoreName" type="text" placeholder="商店名稱">
+              <input id="newStoreDesc" type="text" placeholder="備註 / 類型">
+              <button class="primary-btn" onclick="addStore()">新增商店</button>
+            </div>
+
+            <div class="muted-block" style="margin: 0 18px 18px;">
+              小提醒：退稅品項可在購物記帳中直接標註「未退稅 / 已退稅」，方便回程在機場逐項檢查。
+            </div>
+          </section>
+        </div>
+      </aside>
+    </div>
+
+    <div class="footer-note">
+      Sakura Planner Pro · 行程與購物資料皆儲存在本機瀏覽器 localStorage
+    </div>
+  </div>
+
+  <div class="modal" id="editorModal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div class="section-head" style="padding:0;">
+          <div>
+            <h3 id="modalTitle">編輯行程</h3>
+            <p class="section-sub">可編輯時間、標題、描述、路線、交通時間、營業時間、連結與地圖嵌入網址。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <div class="form-grid">
+          <div class="field">
+            <label>天數</label>
+            <select id="f-day">
+              <option value="1">Day 1</option>
+              <option value="2">Day 2</option>
+              <option value="3">Day 3</option>
+              <option value="4">Day 4</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>時間</label>
+            <input id="f-time" type="text" placeholder="例如：14:00 / 上午 / 抵達">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>標題</label>
+          <input id="f-title" type="text" placeholder="例如：景福宮">
+        </div>
+
+        <div class="field">
+          <label>標籤（用逗號分隔）</label>
+          <input id="f-tags" type="text" placeholder="例如：賞櫻, 古宮, 拍照景點">
+        </div>
+
+        <div class="field">
+          <label>簡要描述</label>
+          <textarea id="f-desc" placeholder="輸入景點或行程說明"></textarea>
+        </div>
+
+        <div class="field">
+          <label>路線規劃</label>
+          <textarea id="f-route" placeholder="例如：飯店 → 地鐵 → 景點"></textarea>
+        </div>
+
+        <div class="form-grid">
+          <div class="field">
+            <label>旅行時間</label>
+            <input id="f-travelTime" type="text" placeholder="例如：30–40 分鐘">
+          </div>
+          <div class="field">
+            <label>即時營業時間 / 備註</label>
+            <input id="f-hours" type="text" placeholder="例如：10:00–22:00，週二公休">
+          </div>
+        </div>
+
+        <div class="form-grid">
+          <div class="field">
+            <label>Naver 地圖連結</label>
+            <input id="f-naver" type="url" placeholder="https://naver.me/...">
+          </div>
+          <div class="field">
+            <label>預訂 / 官方連結</label>
+            <input id="f-booking" type="url" placeholder="https://...">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Google 地圖嵌入網址</label>
+          <input id="f-embed" type="url" placeholder="https://www.google.com/maps?q=...&output=embed">
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="ghost-btn" onclick="closeEditor()">取消</button>
+        <button class="primary-btn" onclick="saveEditor()">儲存行程</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE = {
+      shopping: 'seoul_sakura_shopping_v3',
+      stores: 'seoul_sakura_store_list_v3',
+      exchangeRate: 'seoul_sakura_exchange_rate_v3',
+      itinerary: 'seoul_sakura_itinerary_v3'
     };
 
-    function showDay(dayNum) {
-        document.querySelectorAll('.day-content').forEach(d => d.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById('day' + dayNum).classList.add('active');
-        event.target.classList.add('active');
+    let exchangeRate = parseFloat(localStorage.getItem(STORAGE.exchangeRate)) || 0.0214532;
+    let itineraryData = JSON.parse(localStorage.getItem(STORAGE.itinerary) || 'null');
+    let editingItemId = null;
+
+    const defaultItinerary = {
+      1: [
+        {
+          id: uid(),
+          time: '19:05 抵達',
+          title: '仁川機場 ➜ Grid Inn Hotel',
+          tags: ['交通', '預估 80–100 分鐘', '深夜抵達注意入住'],
+          desc: '第一天以順利入境、換匯、交通移動與飯店 check-in 為主。建議先確認 T-money / WOWPASS、網卡與房號備忘。',
+          route: '仁川機場 → 機場巴士 6002 或 AREX + 地鐵 → 鐘路三街 / 乙支路周邊 → 飯店。',
+          travelTime: '約 1 小時 20 分～1 小時 40 分',
+          hours: '住宿與交通類地點以當日班次與入住規則為準',
+          naver: 'https://naver.me/5O5vLlyB',
+          booking: 'https://www.booking.com/',
+          embed: 'https://www.google.com/maps?q=Grid%20Inn%20Seoul&output=embed'
+        }
+      ],
+      2: [
+        {
+          id: uid(),
+          time: '14:00',
+          title: 'T1 Base Camp / T1 Cafe & Arena',
+          tags: ['追星', '江南', '預估停留 60–90 分'],
+          desc: '朝聖 T1 相關空間，適合購買周邊、拍照、打卡。',
+          route: '飯店 / 前一站 → 地鐵前往江南區 → T1 Cafe & Arena。',
+          travelTime: '約 35–50 分',
+          hours: '依場館公告、活動與品牌營運調整',
+          naver: 'https://naver.me/GXApFSiE',
+          booking: 'https://shop-t1.gg/',
+          embed: 'https://www.google.com/maps?q=T1%20Base%20Camp%20Seoul&output=embed'
+        },
+        {
+          id: uid(),
+          time: '16:00',
+          title: 'TheiA Clinic',
+          tags: ['醫美', '預估 2.5–3 小時', '需預約'],
+          desc: '當日醫美主行程，建議保留充足緩衝時間。',
+          route: 'T1 Cafe & Arena → TheiA Clinic，江南區內移動為主。',
+          travelTime: '約 10–20 分',
+          hours: '依預約時段與診所公告為準',
+          naver: 'https://map.naver.com/',
+          booking: 'https://www.creatrip.com/',
+          embed: 'https://www.google.com/maps?q=TheiA%20Clinic%20Seoul&output=embed'
+        }
+      ],
+      3: [
+        {
+          id: uid(),
+          time: '10:30',
+          title: '景福宮',
+          tags: ['賞櫻', '古宮', '拍照景點'],
+          desc: '首爾經典古宮景點，春季很適合搭配櫻花拍照。',
+          route: '飯店 → 地鐵 / 步行前往景福宮。',
+          travelTime: '約 20–30 分',
+          hours: '古宮營運時間與休宮日可能依季節調整',
+          naver: 'https://map.naver.com/',
+          booking: 'https://www.royalpalace.go.kr/',
+          embed: 'https://www.google.com/maps?q=Gyeongbokgung%20Palace%20Seoul&output=embed'
+        },
+        {
+          id: uid(),
+          time: '14:00',
+          title: '弘大 / Olive Young / JO & DAWSON / 服飾購物',
+          tags: ['購物', '可拆分多店', '記帳重點日'],
+          desc: '第三天適合集中美妝、服飾與選物採買。',
+          route: '弘大入口站商圈內步行移動為主。',
+          travelTime: '店與店之間多為 3–12 分鐘步行',
+          hours: '商圈店家常因分店、活動與假期而不同',
+          naver: 'https://map.naver.com/',
+          booking: 'https://www.oliveyoung.co.kr/',
+          embed: 'https://www.google.com/maps?q=Hongdae%20Seoul&output=embed'
+        }
+      ],
+      4: [
+        {
+          id: uid(),
+          time: '返程前',
+          title: '飯店 ➜ 仁川機場',
+          tags: ['回程', '預估 90–120 分鐘', '建議提早出發'],
+          desc: '建議至少預留 3.5–4 小時前往機場與辦理退稅、托運、安檢。',
+          route: '飯店 → 機場巴士 / 地鐵 → 仁川機場。',
+          travelTime: '約 1 小時 30 分～2 小時',
+          hours: '請依班次、航班與退稅排隊狀況提早出發',
+          naver: 'https://map.naver.com/',
+          booking: '',
+          embed: 'https://www.google.com/maps?q=Incheon%20International%20Airport&output=embed'
+        }
+      ]
+    };
+
+    const defaultShoppingRow = () => ({
+      name: '',
+      date: new Date().toISOString().slice(0, 10),
+      payment: '信用卡',
+      tax: '無',
+      krw: ''
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!itineraryData) {
+        itineraryData = structuredClone(defaultItinerary);
+        saveItineraryData();
+      }
+      initTabs();
+      initRate();
+      renderAllItineraries();
+      initShopping();
+      initStoreList();
+      initSortable();
+    });
+
+    function uid() {
+      return 'id-' + Date.now() + '-' + Math.random().toString(16).slice(2);
     }
 
-    function addRow(data = {name: '', pay: '信用卡', tax: '無', krw: ''}) {
-        const tbody = document.getElementById('shoppingBody');
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td><input type="text" class="save-val name" value="${data.name}" oninput="saveData()" placeholder="項目"></td>
-            <td>
-                <select class="save-val pay" onchange="saveData()">
-                    <option ${data.pay==='信用卡'?'selected':''}>信用卡</option>
-                    <option ${data.pay==='現金'?'selected':''}>現金</option>
-                    <option ${data.pay==='WOWPASS'?'selected':''}>WOWPASS</option>
-                </select>
-            </td>
-            <td>
-                <select class="save-val tax" onchange="saveData()">
-                    <option ${data.tax==='無'?'selected':''}>無</option>
-                    <option ${data.tax==='未退'?'selected':''}>未退</option>
-                    <option ${data.tax==='已退'?'selected':''}>已退</option>
-                </select>
-            </td>
-            <td><input type="number" class="save-val krw" value="${data.krw}" oninput="updateRow(this)" placeholder="韓元"></td>
-            <td class="twd-val">${Math.round(data.krw * exchangeRate)}</td>
+    function structuredClone(obj) {
+      return JSON.parse(JSON.stringify(obj));
+    }
+
+    function saveItineraryData() {
+      localStorage.setItem(STORAGE.itinerary, JSON.stringify(itineraryData));
+    }
+
+    function initTabs() {
+      const buttons = document.querySelectorAll('.tab-btn');
+      buttons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const day = btn.dataset.day;
+          document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+          document.querySelectorAll('.day-content').forEach(c => c.classList.remove('active'));
+          btn.classList.add('active');
+          document.getElementById(`day${day}`).classList.add('active');
+        });
+      });
+    }
+
+    function initRate() {
+      document.getElementById('exchangeRateInput').value = exchangeRate;
+      document.getElementById('rateLabel').textContent = Number(exchangeRate).toFixed(6);
+    }
+
+    function updateExchangeRate(val) {
+      exchangeRate = parseFloat(val) || 0;
+      localStorage.setItem(STORAGE.exchangeRate, exchangeRate);
+      document.getElementById('rateLabel').textContent = Number(exchangeRate).toFixed(6);
+      recalcShopping();
+    }
+
+    function renderAllItineraries() {
+      [1,2,3,4].forEach(day => renderItineraryDay(day));
+    }
+
+    function renderItineraryDay(day) {
+      const list = document.getElementById(`itinerary-day${day}`);
+      list.innerHTML = '';
+
+      itineraryData[day].forEach(item => {
+        const card = document.createElement('article');
+        card.className = 'card';
+        card.dataset.id = item.id;
+        card.innerHTML = `
+          <div class="drag-handle">⋮⋮</div>
+          <div class="card-top">
+            <div class="time-badge">${escapeHtml(item.time || '')}</div>
+            <div>
+              <h3>${escapeHtml(item.title || '')}</h3>
+
+              <div class="meta">
+                ${(item.tags || []).map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}
+              </div>
+
+              <p>${escapeHtml(item.desc || '')}</p>
+
+              <div class="route-box">
+                <strong>路線規劃</strong>
+                <p class="minor">${escapeHtml(item.route || '')}</p>
+                <p class="minor">旅行時間：${escapeHtml(item.travelTime || '')}</p>
+              </div>
+
+              ${
+                item.embed
+                  ? `<div class="map-box">
+                      <iframe loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="${escapeAttr(item.embed)}"></iframe>
+                    </div>`
+                  : ''
+              }
+
+              <div class="btn-row">
+                ${item.naver ? `<a class="primary-btn" href="${escapeAttr(item.naver)}" target="_blank" rel="noopener">Naver Map</a>` : ''}
+                ${item.naver ? `<a class="ghost-btn" href="${escapeAttr(item.naver)}" target="_blank" rel="noopener">路線規劃</a>` : ''}
+                ${item.booking ? `<a class="small-btn" href="${escapeAttr(item.booking)}" target="_blank" rel="noopener">預訂 / 官方</a>` : ''}
+                <button class="small-btn" onclick="openEditor(${day}, '${item.id}')">編輯</button>
+                <button class="danger-btn" onclick="deleteItineraryItem(${day}, '${item.id}')">刪除</button>
+              </div>
+
+              ${
+                item.hours
+                  ? `<div class="muted-block"><strong>即時營業時間 / 備註：</strong><br>${escapeHtml(item.hours)}</div>`
+                  : ''
+              }
+            </div>
+          </div>
         `;
-        tbody.appendChild(row);
-        updateTotal();
+        list.appendChild(card);
+      });
     }
 
-    function updateRow(el) {
-        const row = el.closest('tr');
-        const krw = el.value;
-        const twdCell = row.querySelector('.twd-val');
-        twdCell.innerText = Math.round(krw * exchangeRate);
-        saveData();
-        updateTotal();
-    }
+    function openEditor(day, itemId = null) {
+      editingItemId = itemId;
+      document.getElementById('editorModal').classList.add('show');
+      document.getElementById('f-day').value = day;
 
-    function updateTotal() {
-        let total = 0;
-        document.querySelectorAll('.twd-val').forEach(cell => {
-            total += parseInt(cell.innerText) || 0;
+      if (!itemId) {
+        document.getElementById('modalTitle').textContent = `新增 Day ${day} 行程`;
+        setFormValues({
+          day,
+          time: '',
+          title: '',
+          tags: '',
+          desc: '',
+          route: '',
+          travelTime: '',
+          hours: '',
+          naver: '',
+          booking: '',
+          embed: ''
         });
-        document.getElementById('grandTotal').innerText = total.toLocaleString();
+        return;
+      }
+
+      const item = itineraryData[day].find(x => x.id === itemId);
+      document.getElementById('modalTitle').textContent = `編輯 Day ${day} 行程`;
+      setFormValues({
+        day,
+        time: item.time || '',
+        title: item.title || '',
+        tags: (item.tags || []).join(', '),
+        desc: item.desc || '',
+        route: item.route || '',
+        travelTime: item.travelTime || '',
+        hours: item.hours || '',
+        naver: item.naver || '',
+        booking: item.booking || '',
+        embed: item.embed || ''
+      });
     }
 
-    // 儲存資料到手機
-    function saveData() {
-        const rows = [];
-        document.querySelectorAll('#shoppingBody tr').forEach(tr => {
-            rows.push({
-                name: tr.querySelector('.name').value,
-                pay: tr.querySelector('.pay').value,
-                tax: tr.querySelector('.tax').value,
-                krw: tr.querySelector('.krw').value
-            });
+    function setFormValues(data) {
+      document.getElementById('f-day').value = data.day;
+      document.getElementById('f-time').value = data.time || '';
+      document.getElementById('f-title').value = data.title || '';
+      document.getElementById('f-tags').value = data.tags || '';
+      document.getElementById('f-desc').value = data.desc || '';
+      document.getElementById('f-route').value = data.route || '';
+      document.getElementById('f-travelTime').value = data.travelTime || '';
+      document.getElementById('f-hours').value = data.hours || '';
+      document.getElementById('f-naver').value = data.naver || '';
+      document.getElementById('f-booking').value = data.booking || '';
+      document.getElementById('f-embed').value = data.embed || '';
+    }
+
+    function closeEditor() {
+      editingItemId = null;
+      document.getElementById('editorModal').classList.remove('show');
+    }
+
+    function saveEditor() {
+      const day = Number(document.getElementById('f-day').value);
+      const item = {
+        id: editingItemId || uid(),
+        time: document.getElementById('f-time').value.trim(),
+        title: document.getElementById('f-title').value.trim(),
+        tags: document.getElementById('f-tags').value.split(',').map(v => v.trim()).filter(Boolean),
+        desc: document.getElementById('f-desc').value.trim(),
+        route: document.getElementById('f-route').value.trim(),
+        travelTime: document.getElementById('f-travelTime').value.trim(),
+        hours: document.getElementById('f-hours').value.trim(),
+        naver: document.getElementById('f-naver').value.trim(),
+        booking: document.getElementById('f-booking').value.trim(),
+        embed: document.getElementById('f-embed').value.trim()
+      };
+
+      if (!item.title) {
+        alert('請至少輸入行程標題');
+        return;
+      }
+
+      if (editingItemId) {
+        for (const d of [1,2,3,4]) {
+          const index = itineraryData[d].findIndex(x => x.id === editingItemId);
+          if (index > -1) {
+            itineraryData[d].splice(index, 1);
+            break;
+          }
+        }
+      }
+
+      itineraryData[day].push(item);
+      saveItineraryData();
+      renderAllItineraries();
+      initSortable();
+      closeEditor();
+
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.day-content').forEach(c => c.classList.remove('active'));
+      document.querySelector(`.tab-btn[data-day="${day}"]`).classList.add('active');
+      document.getElementById(`day${day}`).classList.add('active');
+    }
+
+    function deleteItineraryItem(day, itemId) {
+      if (!confirm('確定要刪除這筆行程嗎？')) return;
+      itineraryData[day] = itineraryData[day].filter(item => item.id !== itemId);
+      saveItineraryData();
+      renderItineraryDay(day);
+      initSortable();
+    }
+
+    function initShopping() {
+      const saved = JSON.parse(localStorage.getItem(STORAGE.shopping) || '[]');
+      const rows = saved.length ? saved : [defaultShoppingRow()];
+      const tbody = document.getElementById('shoppingBody');
+      tbody.innerHTML = '';
+      rows.forEach(row => renderShoppingRow(row));
+      recalcShopping();
+    }
+
+    function renderShoppingRow(data) {
+      const tbody = document.getElementById('shoppingBody');
+      const tr = document.createElement('tr');
+
+      tr.innerHTML = `
+        <td><input type="text" class="shop-name" value="${escapeAttr(data.name || '')}" placeholder="例如：Olive Young 面膜" oninput="saveShopping()"></td>
+        <td><input type="date" class="shop-date" value="${escapeAttr(data.date || '')}" onchange="saveShopping()"></td>
+        <td>
+          <select class="shop-payment" onchange="saveShopping()">
+            <option ${data.payment === '信用卡' ? 'selected' : ''}>信用卡</option>
+            <option ${data.payment === '現金' ? 'selected' : ''}>現金</option>
+            <option ${data.payment === '行動支付' ? 'selected' : ''}>行動支付</option>
+          </select>
+        </td>
+        <td>
+          <select class="shop-tax" onchange="saveShopping()">
+            <option ${data.tax === '無' ? 'selected' : ''}>無</option>
+            <option ${data.tax === '未退稅' ? 'selected' : ''}>未退稅</option>
+            <option ${data.tax === '已退稅' ? 'selected' : ''}>已退稅</option>
+          </select>
+        </td>
+        <td><input type="number" class="shop-krw" value="${escapeAttr(data.krw || '')}" placeholder="0" oninput="saveShopping()"></td>
+        <td class="shop-twd">0</td>
+        <td><button class="delete-btn" onclick="deleteShoppingRow(this)">刪除</button></td>
+      `;
+
+      tbody.appendChild(tr);
+      updateRowTWD(tr);
+    }
+
+    function addShoppingRow() {
+      renderShoppingRow(defaultShoppingRow());
+      saveShopping();
+    }
+
+    function deleteShoppingRow(btn) {
+      const row = btn.closest('tr');
+      row.remove();
+      if (!document.querySelector('#shoppingBody tr')) {
+        renderShoppingRow(defaultShoppingRow());
+      }
+      saveShopping();
+    }
+
+    function updateRowTWD(row) {
+      const krw = parseFloat(row.querySelector('.shop-krw').value) || 0;
+      const twd = krw * exchangeRate;
+      row.querySelector('.shop-twd').textContent = twd.toLocaleString('zh-TW', {
+        maximumFractionDigits: 0
+      });
+      return { krw, twd };
+    }
+
+    function saveShopping() {
+      const data = [];
+      document.querySelectorAll('#shoppingBody tr').forEach(row => {
+        updateRowTWD(row);
+        data.push({
+          name: row.querySelector('.shop-name').value,
+          date: row.querySelector('.shop-date').value,
+          payment: row.querySelector('.shop-payment').value,
+          tax: row.querySelector('.shop-tax').value,
+          krw: row.querySelector('.shop-krw').value
         });
-        localStorage.setItem('korea_shopping_data', JSON.stringify(rows));
+      });
+      localStorage.setItem(STORAGE.shopping, JSON.stringify(data));
+      recalcShopping();
     }
 
-    // 從手機載入資料
-    function loadData() {
-        const saved = localStorage.getItem('korea_shopping_data');
-        if (saved) {
-            const data = JSON.parse(saved);
-            document.getElementById('shoppingBody').innerHTML = '';
-            data.forEach(item => addRow(item));
-        }
+    function recalcShopping() {
+      let totalKRW = 0;
+      let totalTWD = 0;
+      let totalItems = 0;
+
+      document.querySelectorAll('#shoppingBody tr').forEach(row => {
+        const result = updateRowTWD(row);
+        totalKRW += result.krw;
+        totalTWD += result.twd;
+        totalItems += 1;
+      });
+
+      document.getElementById('totalItems').textContent = totalItems.toLocaleString('zh-TW');
+      document.getElementById('totalKRW').textContent = totalKRW.toLocaleString('zh-TW', { maximumFractionDigits: 0 });
+      document.getElementById('totalTWD').textContent = totalTWD.toLocaleString('zh-TW', { maximumFractionDigits: 0 });
     }
 
-    function clearAll() {
-        if (confirm('確定要清空所有記帳資料嗎？')) {
-            localStorage.removeItem('korea_shopping_data');
-            document.getElementById('shoppingBody').innerHTML = '';
-            addRow();
-            updateTotal();
-        }
+    function clearShopping() {
+      if (!confirm('確定要清空所有購物記帳資料嗎？')) return;
+      localStorage.removeItem(STORAGE.shopping);
+      initShopping();
     }
-</script>
 
+    function initStoreList() {
+      const saved = JSON.parse(localStorage.getItem(STORAGE.stores) || 'null');
+      if (saved && Array.isArray(saved) && saved.length) {
+        const list = document.getElementById('storeList');
+        list.innerHTML = '';
+        saved.forEach(item => {
+          list.appendChild(createStoreItem(item.name, item.desc, item.done, item.id));
+        });
+      }
+      saveStores();
+    }
+
+    function createStoreItem(name, desc, done = false, id = `store-${Date.now()}-${Math.random().toString(16).slice(2)}`) {
+      const li = document.createElement('li');
+      li.className = `store-item ${done ? 'done' : ''}`;
+      li.dataset.id = id;
+      li.innerHTML = `
+        <span class="drag">⋮⋮</span>
+        <label class="store-main">
+          <strong>${escapeHtml(name)}</strong>
+          <span>${escapeHtml(desc)}</span>
+        </label>
+        <input class="check" type="checkbox" ${done ? 'checked' : ''} onchange="toggleStoreDone(this)">
+      `;
+      return li;
+    }
+
+    function addStore() {
+      const name = document.getElementById('newStoreName').value.trim();
+      const desc = document.getElementById('newStoreDesc').value.trim();
+      if (!name) {
+        alert('請先輸入商店名稱');
+        return;
+      }
+      const list = document.getElementById('storeList');
+      list.appendChild(createStoreItem(name, desc || '未分類'));
+      document.getElementById('newStoreName').value = '';
+      document.getElementById('newStoreDesc').value = '';
+      saveStores();
+    }
+
+    function toggleStoreDone(checkbox) {
+      const item = checkbox.closest('.store-item');
+      item.classList.toggle('done', checkbox.checked);
+      saveStores();
+    }
+
+    function saveStores() {
+      const data = [];
+      document.querySelectorAll('#storeList .store-item').forEach(item => {
+        data.push({
+          id: item.dataset.id,
+          name: item.querySelector('strong').textContent,
+          desc: item.querySelector('.store-main span').textContent,
+          done: item.querySelector('.check').checked
+        });
+      });
+      localStorage.setItem(STORAGE.stores, JSON.stringify(data));
+    }
+
+    function initSortable() {
+      document.querySelectorAll('.itinerary-list').forEach(list => {
+        if (list._sortable) list._sortable.destroy();
+        list._sortable = new Sortable(list, {
+          animation: 180,
+          handle: '.drag-handle',
+          onEnd: () => syncItineraryFromDOM(list)
+        });
+      });
+
+      const storeList = document.getElementById('storeList');
+      if (storeList._sortable) storeList._sortable.destroy();
+      storeList._sortable = new Sortable(storeList, {
+        animation: 180,
+        handle: '.drag',
+        onEnd: saveStores
+      });
+    }
+
+    function syncItineraryFromDOM(list) {
+      const day = Number(list.id.replace('itinerary-day', ''));
+      const order = [...list.children].map(card => card.dataset.id);
+      itineraryData[day] = order.map(id => itineraryData[day].find(item => item.id === id)).filter(Boolean);
+      saveItineraryData();
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    function escapeAttr(str) {
+      return escapeHtml(str);
+    }
+
+    document.getElementById('editorModal').addEventListener('click', (e) => {
+      if (e.target.id === 'editorModal') closeEditor();
+    });
+  </script>
 </body>
 </html>
