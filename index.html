@@ -91,7 +91,7 @@
       min-width: max-content;
     }
 
-    .tab-btn, .primary-btn, .small-btn, .ghost-btn, .danger-btn, .delete-btn {
+    .tab-btn, .primary-btn, .small-btn, .ghost-btn, .danger-btn, .delete-btn, .toggle-btn {
       border: 0;
       cursor: pointer;
       font-family: inherit;
@@ -196,12 +196,24 @@
       user-select: none;
     }
 
-    .card-top {
+    .card-header {
       display: grid;
-      grid-template-columns: 125px 1fr;
+      grid-template-columns: 125px 1fr auto;
       gap: 14px;
       align-items: start;
       padding-right: 28px;
+    }
+
+    .card-summary {
+      min-width: 0;
+    }
+
+    .card-actions-top {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      align-items: flex-start;
     }
 
     .time-badge {
@@ -227,7 +239,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin: 10px 0;
+      margin: 10px 0 0;
     }
 
     .tag {
@@ -237,6 +249,33 @@
       padding: 6px 10px;
       border-radius: 999px;
       font-weight: 800;
+    }
+
+    .toggle-btn {
+      background: #fff;
+      color: var(--rose);
+      border: 1px solid rgba(217,95,147,.14);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: .88rem;
+      font-weight: 800;
+    }
+
+    .card-body {
+      display: none;
+      margin-top: 14px;
+    }
+
+    .card.expanded .card-body {
+      display: block;
+    }
+
+    .card.expanded .toggle-label-open {
+      display: none;
+    }
+
+    .card:not(.expanded) .toggle-label-close {
+      display: none;
     }
 
     .card p {
@@ -317,7 +356,7 @@
       border: 1px solid rgba(217,95,147,.12);
     }
 
-    .primary-btn:hover, .small-btn:hover, .ghost-btn:hover, .danger-btn:hover, .tab-btn:hover, .delete-btn:hover {
+    .primary-btn:hover, .small-btn:hover, .ghost-btn:hover, .danger-btn:hover, .tab-btn:hover, .delete-btn:hover, .toggle-btn:hover {
       transform: translateY(-1px);
       filter: brightness(.99);
     }
@@ -607,12 +646,17 @@
         font-size: .95rem;
       }
 
-      .card-top {
+      .card-header {
         grid-template-columns: 1fr;
+        padding-right: 28px;
       }
 
       .time-badge {
         width: fit-content;
+      }
+
+      .card-actions-top {
+        justify-content: flex-start;
       }
 
       .summary-grid {
@@ -993,10 +1037,10 @@
 
   <script>
     const STORAGE = {
-      shopping: 'seoul_sakura_shopping_v5',
-      stores: 'seoul_sakura_store_list_v5',
-      exchangeRate: 'seoul_sakura_exchange_rate_v5',
-      itinerary: 'seoul_sakura_itinerary_v5'
+      shopping: 'seoul_sakura_shopping_v6',
+      stores: 'seoul_sakura_store_list_v6',
+      exchangeRate: 'seoul_sakura_exchange_rate_v6',
+      itinerary: 'seoul_sakura_itinerary_v6'
     };
 
     let exchangeRate = parseFloat(localStorage.getItem(STORAGE.exchangeRate)) || 0.0214532;
@@ -1016,7 +1060,8 @@
           hours: '住宿與交通類地點以當日班次與入住規則為準',
           naver: 'https://naver.me/5O5vLlyB',
           booking: 'https://www.booking.com/',
-          embed: 'https://www.google.com/maps?q=Grid%20Inn%20Seoul&output=embed'
+          embed: 'https://www.google.com/maps?q=Grid%20Inn%20Seoul&output=embed',
+          collapsed: true
         }
       ],
       2: [
@@ -1031,7 +1076,8 @@
           hours: '依場館公告、活動與品牌營運調整',
           naver: 'https://naver.me/GXApFSiE',
           booking: 'https://shop-t1.gg/',
-          embed: 'https://www.google.com/maps?q=T1%20Base%20Camp%20Seoul&output=embed'
+          embed: 'https://www.google.com/maps?q=T1%20Base%20Camp%20Seoul&output=embed',
+          collapsed: true
         },
         {
           id: uid(),
@@ -1044,7 +1090,8 @@
           hours: '依預約時段與診所公告為準',
           naver: 'https://map.naver.com/',
           booking: 'https://www.creatrip.com/',
-          embed: 'https://www.google.com/maps?q=TheiA%20Clinic%20Seoul&output=embed'
+          embed: 'https://www.google.com/maps?q=TheiA%20Clinic%20Seoul&output=embed',
+          collapsed: true
         }
       ],
       3: [
@@ -1059,7 +1106,8 @@
           hours: '古宮營運時間與休宮日可能依季節調整',
           naver: 'https://map.naver.com/',
           booking: 'https://www.royalpalace.go.kr/',
-          embed: 'https://www.google.com/maps?q=Gyeongbokgung%20Palace%20Seoul&output=embed'
+          embed: 'https://www.google.com/maps?q=Gyeongbokgung%20Palace%20Seoul&output=embed',
+          collapsed: true
         },
         {
           id: uid(),
@@ -1072,7 +1120,8 @@
           hours: '商圈店家常因分店、活動與假期而不同',
           naver: 'https://map.naver.com/',
           booking: 'https://www.oliveyoung.co.kr/',
-          embed: 'https://www.google.com/maps?q=Hongdae%20Seoul&output=embed'
+          embed: 'https://www.google.com/maps?q=Hongdae%20Seoul&output=embed',
+          collapsed: true
         }
       ],
       4: [
@@ -1087,7 +1136,8 @@
           hours: '請依班次、航班與退稅排隊狀況提早出發',
           naver: 'https://map.naver.com/',
           booking: '',
-          embed: 'https://www.google.com/maps?q=Incheon%20International%20Airport&output=embed'
+          embed: 'https://www.google.com/maps?q=Incheon%20International%20Airport&output=embed',
+          collapsed: true
         }
       ]
     };
@@ -1145,13 +1195,11 @@
 
     function initRate() {
       document.getElementById('exchangeRateInput').value = exchangeRate;
-      document.getElementById('rateLabel').textContent = Number(exchangeRate).toFixed(6);
     }
 
     function updateExchangeRate(val) {
       exchangeRate = parseFloat(val) || 0;
       localStorage.setItem(STORAGE.exchangeRate, exchangeRate);
-      document.getElementById('rateLabel').textContent = Number(exchangeRate).toFixed(6);
     }
 
     function renderAllItineraries() {
@@ -1164,53 +1212,75 @@
 
       itineraryData[day].forEach(item => {
         const card = document.createElement('article');
-        card.className = 'card';
+        card.className = `card ${item.collapsed === false ? 'expanded' : ''}`;
         card.dataset.id = item.id;
+
         card.innerHTML = `
           <div class="drag-handle">⋮⋮</div>
-          <div class="card-top">
-            <div class="time-badge">${escapeHtml(item.time || '')}</div>
-            <div>
-              <h3>${escapeHtml(item.title || '')}</h3>
 
+          <div class="card-header">
+            <div class="time-badge">${escapeHtml(item.time || '')}</div>
+
+            <div class="card-summary">
+              <h3>${escapeHtml(item.title || '')}</h3>
               <div class="meta">
                 ${(item.tags || []).map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}
               </div>
+            </div>
 
-              <p>${escapeHtml(item.desc || '')}</p>
-
-              <div class="route-box">
-                <strong>路線規劃</strong>
-                <p class="minor">${escapeHtml(item.route || '')}</p>
-                <p class="minor">旅行時間：${escapeHtml(item.travelTime || '')}</p>
-              </div>
-
-              ${
-                item.embed
-                  ? `<div class="map-box">
-                      <iframe loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="${escapeAttr(item.embed)}"></iframe>
-                    </div>`
-                  : ''
-              }
-
-              <div class="btn-row">
-                ${item.naver ? `<a class="primary-btn" href="${escapeAttr(item.naver)}" target="_blank" rel="noopener">Naver Map</a>` : ''}
-                ${item.naver ? `<a class="ghost-btn" href="${escapeAttr(item.naver)}" target="_blank" rel="noopener">路線規劃</a>` : ''}
-                ${item.booking ? `<a class="small-btn" href="${escapeAttr(item.booking)}" target="_blank" rel="noopener">預訂 / 官方</a>` : ''}
-                <button class="small-btn" onclick="openEditor(${day}, '${item.id}')">編輯</button>
-                <button class="danger-btn" onclick="deleteItineraryItem(${day}, '${item.id}')">刪除</button>
-              </div>
-
-              ${
-                item.hours
-                  ? `<div class="muted-block"><strong>即時營業時間 / 備註：</strong><br>${escapeHtml(item.hours)}</div>`
-                  : ''
-              }
+            <div class="card-actions-top">
+              <button class="toggle-btn" onclick="toggleCard('${item.id}', ${day})">
+                <span class="toggle-label-open">展開</span>
+                <span class="toggle-label-close">收合</span>
+              </button>
+              <button class="small-btn" onclick="openEditor(${day}, '${item.id}')">編輯</button>
+              <button class="danger-btn" onclick="deleteItineraryItem(${day}, '${item.id}')">刪除</button>
             </div>
           </div>
+
+          <div class="card-body">
+            <p>${escapeHtml(item.desc || '')}</p>
+
+            <div class="route-box">
+              <strong>路線規劃</strong>
+              <p class="minor">${escapeHtml(item.route || '')}</p>
+              <p class="minor">旅行時間：${escapeHtml(item.travelTime || '')}</p>
+            </div>
+
+            ${
+              item.embed
+                ? `<div class="map-box">
+                    <iframe loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="${escapeAttr(item.embed)}"></iframe>
+                  </div>`
+                : ''
+            }
+
+            <div class="btn-row">
+              ${item.naver ? `<a class="primary-btn" href="${escapeAttr(item.naver)}" target="_blank" rel="noopener">Naver Map</a>` : ''}
+              ${item.naver ? `<a class="ghost-btn" href="${escapeAttr(item.naver)}" target="_blank" rel="noopener">路線規劃</a>` : ''}
+              ${item.booking ? `<a class="small-btn" href="${escapeAttr(item.booking)}" target="_blank" rel="noopener">預訂 / 官方</a>` : ''}
+            </div>
+
+            ${
+              item.hours
+                ? `<div class="muted-block"><strong>即時營業時間 / 備註：</strong><br>${escapeHtml(item.hours)}</div>`
+                : ''
+            }
+          </div>
         `;
+
         list.appendChild(card);
       });
+    }
+
+    function toggleCard(itemId, day) {
+      const item = itineraryData[day].find(x => x.id === itemId);
+      if (!item) return;
+
+      item.collapsed = item.collapsed === false ? true : false;
+      saveItineraryData();
+      renderItineraryDay(day);
+      initSortable();
     }
 
     function openEditor(day, itemId = null) {
@@ -1274,6 +1344,18 @@
 
     function saveEditor() {
       const day = Number(document.getElementById('f-day').value);
+
+      const existingCollapsed =
+        editingItemId
+          ? (() => {
+              for (const d of [1,2,3,4]) {
+                const found = itineraryData[d].find(x => x.id === editingItemId);
+                if (found) return found.collapsed;
+              }
+              return true;
+            })()
+          : true;
+
       const item = {
         id: editingItemId || uid(),
         time: document.getElementById('f-time').value.trim(),
@@ -1285,7 +1367,8 @@
         hours: document.getElementById('f-hours').value.trim(),
         naver: document.getElementById('f-naver').value.trim(),
         booking: document.getElementById('f-booking').value.trim(),
-        embed: document.getElementById('f-embed').value.trim()
+        embed: document.getElementById('f-embed').value.trim(),
+        collapsed: existingCollapsed !== false
       };
 
       if (!item.title) {
