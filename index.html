@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>🌸 2026 首爾櫻花旅行看板 (手動記帳版)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+    <style>
+        :root {
+            --cherry-pink: #ffb7c5;
+            --soft-pink: #ffe4e8;
+            --dark-pink: #d63384;
+            --bg-white: #fffafb;
+            --card-shadow: 0 4px 12px rgba(255, 183, 197, 0.4);
+        }
+
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: var(--bg-white);
+            color: #4a4a4a;
+            margin: 0;
+            padding: 15px;
+            padding-bottom: 50px;
+        }
+
+        header {
+            text-align: center;
+            padding: 15px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 20px;
+            border: 2px solid var(--cherry-pink);
+        }
+
+        h1 { color: var(--dark-pink); margin: 0; font-size: 1.4rem; }
+        .sub-header { font-size: 0.85rem; color: #888; margin-top: 5px; }
+
+        /* 頁籤切換 */
+        .tabs {
+            display: flex;
+            justify-content: space-around;
+            gap: 5px;
+            margin-bottom: 15px;
+            overflow-x: auto;
+        }
+
+        .tab-btn {
+            padding: 8px 15px;
+            border: none;
+            background: white;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: var(--card-shadow);
+            font-weight: bold;
+            color: var(--dark-pink);
+            white-space: nowrap;
+        }
+
+        .tab-btn.active {
+            background: var(--cherry-pink);
+            color: white;
+        }
+
+        /* 行程卡片 */
+        .day-content { display: none; }
+        .day-content.active { display: block; }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            border-left: 6px solid var(--cherry-pink);
+        }
+
+        .time {
+            font-weight: bold;
+            width: 70px;
+            color: var(--dark-pink);
+            font-size: 0.9rem;
+        }
+
+        .info { flex: 1; }
+        .info h3 { margin: 0 0 5px 0; font-size: 1rem; }
+        .info p { margin: 0; font-size: 0.85rem; color: #666; line-height: 1.4; }
+
+        .links {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .link-btn {
+            text-decoration: none;
+            font-size: 0.75rem;
+            color: white;
+            background: #4facfe;
+            padding: 4px 10px;
+            border-radius: 15px;
+        }
+
+        /* 購物記帳區 */
+        .shopping-section {
+            background: white;
+            padding: 15px;
+            border-radius: 15px;
+            box-shadow: var(--card-shadow);
+            margin-top: 30px;
+        }
+
+        .shopping-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        /* 表格手機優化 */
+        .table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        table {
+            width: 100%;
+            min-width: 500px;
+            border-collapse: collapse;
+        }
+
+        th { background: var(--soft-pink); font-size: 0.85rem; padding: 10px; text-align: left; }
+        td { border-bottom: 1px dotted var(--cherry-pink); padding: 8px; }
+
+        input, select {
+            padding: 6px;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            width: 90%;
+        }
+
+        .add-btn {
+            background: var(--dark-pink);
+            color: white;
+            border: none;
+            padding: 10px;
+            width: 100%;
+            border-radius: 8px;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        .total-box {
+            text-align: right;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--dark-pink);
+            margin-top: 15px;
+            padding: 10px;
+            background: var(--soft-pink);
+            border-radius: 8px;
+        }
+
+        .clear-btn {
+            font-size: 0.7rem;
+            background: #ccc;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🌸 首爾櫻花旅行 2026</h1>
+    <div class="sub-header">Grid Inn Hotel | 匯率: 1 KRW ≈ 0.024 TWD</div>
+</header>
+
+<div class="tabs">
+    <button class="tab-btn active" onclick="showDay(1)">D1 抵達</button>
+    <button class="tab-btn" onclick="showDay(2)">D2 江南</button>
+    <button class="tab-btn" onclick="showDay(3)">D3 弘大</button>
+    <button class="tab-btn" onclick="showDay(4)">D4 追星</button>
+</div>
+
+<div id="day1" class="day-content active">
+    <div class="card">
+        <div class="time">19:05</div>
+        <div class="info">
+            <h3>仁川機場 ➔ 飯店</h3>
+            <p>機場巴士 6002 至鐘路三街。房號記在備忘錄中。</p>
+            <div class="links"><a href="https://naver.me/5O5vLlyB" class="link-btn">Naver Map</a></div>
+        </div>
+    </div>
+</div>
+
+<div id="day2" class="day-content">
+    <div class="card">
+        <div class="time">14:00</div>
+        <div class="info">
+            <h3>T1 Cafe & Arena</h3>
+            <p>朝聖 T1！記得帶應援物。</p>
+            <div class="links"><a href="https://naver.me/GXApFSiE" class="link-btn">Naver Map</a></div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="time">16:00</div>
+        <div class="info">
+            <h3>Theia Clinic</h3>
+            <p>醫美行程，預計耗時 3 小時。</p>
+        </div>
+    </div>
+</div>
+
+<section class="shopping-section">
+    <div class="shopping-header">
+        <h2 style="font-size: 1.1rem; margin: 0;">🛍️ 購物記帳 (自動儲存)</h2>
+        <button class="clear-btn" onclick="clearAll()">重置清單</button>
+    </div>
+    
+    <div class="table-container">
+        <table id="shoppingTable">
+            <thead>
+                <tr>
+                    <th width="30%">項目</th>
+                    <th width="20%">支付</th>
+                    <th width="15%">退稅</th>
+                    <th width="20%">KRW</th>
+                    <th width="15%">TWD</th>
+                </tr>
+            </thead>
+            <tbody id="shoppingBody">
+                </tbody>
+        </table>
+    </div>
+    
+    <button class="add-btn" onclick="addRow()">➕ 新增購物項目</button>
+    
+    <div class="total-box">
+        總計：NT$ <span id="grandTotal">0</span>
+    </div>
+</section>
+
+<script>
+    const exchangeRate = 0.024;
+
+    // 初始化載入
+    window.onload = function() {
+        loadData();
+        if (document.querySelectorAll('#shoppingBody tr').length === 0) {
+            addRow(); // 預設一行
+        }
+    };
+
+    function showDay(dayNum) {
+        document.querySelectorAll('.day-content').forEach(d => d.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('day' + dayNum).classList.add('active');
+        event.target.classList.add('active');
+    }
+
+    function addRow(data = {name: '', pay: '信用卡', tax: '無', krw: ''}) {
+        const tbody = document.getElementById('shoppingBody');
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td><input type="text" class="save-val name" value="${data.name}" oninput="saveData()" placeholder="項目"></td>
+            <td>
+                <select class="save-val pay" onchange="saveData()">
+                    <option ${data.pay==='信用卡'?'selected':''}>信用卡</option>
+                    <option ${data.pay==='現金'?'selected':''}>現金</option>
+                    <option ${data.pay==='WOWPASS'?'selected':''}>WOWPASS</option>
+                </select>
+            </td>
+            <td>
+                <select class="save-val tax" onchange="saveData()">
+                    <option ${data.tax==='無'?'selected':''}>無</option>
+                    <option ${data.tax==='未退'?'selected':''}>未退</option>
+                    <option ${data.tax==='已退'?'selected':''}>已退</option>
+                </select>
+            </td>
+            <td><input type="number" class="save-val krw" value="${data.krw}" oninput="updateRow(this)" placeholder="韓元"></td>
+            <td class="twd-val">${Math.round(data.krw * exchangeRate)}</td>
+        `;
+        tbody.appendChild(row);
+        updateTotal();
+    }
+
+    function updateRow(el) {
+        const row = el.closest('tr');
+        const krw = el.value;
+        const twdCell = row.querySelector('.twd-val');
+        twdCell.innerText = Math.round(krw * exchangeRate);
+        saveData();
+        updateTotal();
+    }
+
+    function updateTotal() {
+        let total = 0;
+        document.querySelectorAll('.twd-val').forEach(cell => {
+            total += parseInt(cell.innerText) || 0;
+        });
+        document.getElementById('grandTotal').innerText = total.toLocaleString();
+    }
+
+    // 儲存資料到手機
+    function saveData() {
+        const rows = [];
+        document.querySelectorAll('#shoppingBody tr').forEach(tr => {
+            rows.push({
+                name: tr.querySelector('.name').value,
+                pay: tr.querySelector('.pay').value,
+                tax: tr.querySelector('.tax').value,
+                krw: tr.querySelector('.krw').value
+            });
+        });
+        localStorage.setItem('korea_shopping_data', JSON.stringify(rows));
+    }
+
+    // 從手機載入資料
+    function loadData() {
+        const saved = localStorage.getItem('korea_shopping_data');
+        if (saved) {
+            const data = JSON.parse(saved);
+            document.getElementById('shoppingBody').innerHTML = '';
+            data.forEach(item => addRow(item));
+        }
+    }
+
+    function clearAll() {
+        if (confirm('確定要清空所有記帳資料嗎？')) {
+            localStorage.removeItem('korea_shopping_data');
+            document.getElementById('shoppingBody').innerHTML = '';
+            addRow();
+            updateTotal();
+        }
+    }
+</script>
+
+</body>
+</html>
