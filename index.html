@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>🌸 首爾櫻花之行 2026</title>
+  <title>🌸 SEOUL SAKURA 2026</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
@@ -740,7 +740,7 @@
   <div class="shell">
     <header class="hero compact-hero">
       <div class="hero-center">
-        <h1 class="title">🌸 首爾櫻花之行 2026</h1>
+        <h1 class="title">🌸 SEOUL SAKURA 2026</h1>
         <div class="hotel-info">
           <div><strong>🏨 Grid Inn Hotel (格瑞德酒店)</strong></div>
           <div>地址：서울 종로구 종로18길 9-6 (鐘路三街站15號出口)</div>
@@ -816,7 +816,6 @@
           <div class="section-head">
             <div>
               <h2>每日行程表</h2>
-              <p class="section-sub">每張卡片都可拖曳排序，並可直接新增、編輯、刪除。</p>
             </div>
           </div>
           <div class="day-content force-show">
@@ -913,23 +912,23 @@
                 <li class="store-item" data-id="store-2">
                   <span class="drag">⋮⋮</span>
                   <label class="store-main">
-                    <strong>JO &amp; DAWSON</strong>
-                    <span>選物、服飾、生活風格商品</span>
+                    <strong>吉伊卡哇韓國限定版</strong>
+                    <span>限定周邊、特典與活動商品</span>
                   </label>
                   <input class="check" type="checkbox" onchange="toggleStoreDone(this)">
                 </li>
                 <li class="store-item" data-id="store-3">
                   <span class="drag">⋮⋮</span>
                   <label class="store-main">
-                    <strong>T1 Shop / T1 Base Camp</strong>
-                    <span>戰隊周邊、追星採買</span>
+                    <strong>PLAVE快閃店 / 活動場販</strong>
+                    <span>限定周邊、特典與活動商品</span>
                   </label>
                   <input class="check" type="checkbox" onchange="toggleStoreDone(this)">
                 </li>
                 <li class="store-item" data-id="store-4">
                   <span class="drag">⋮⋮</span>
                   <label class="store-main">
-                    <strong>快閃店 / 活動場販</strong>
+                    <strong>DS演唱會活動場販</strong>
                     <span>限定周邊、特典與活動商品</span>
                   </label>
                   <input class="check" type="checkbox" onchange="toggleStoreDone(this)">
@@ -1002,7 +1001,7 @@
 
         <div class="form-grid">
           <div class="field">
-            <label>旅行時間</label>
+            <label>交通時間</label>
             <input id="f-travelTime" type="text" placeholder="例如：30–40 分鐘">
           </div>
           <div class="field">
@@ -1070,7 +1069,7 @@ const defaultItinerary = {
           tags: ['航班', '飛行'],
           desc: '搭乘 CI162 航班從桃園飛往首爾。抵達後(19:05-20:00)辦理入境並領取行李。',
           route: '',
-          travelTime: '約 3.5 小時',
+          travelTime: '約 2.5 小時',
           hours: '航班 CI162',
           naver: '',
           booking: '',
@@ -1083,11 +1082,11 @@ const defaultItinerary = {
           title: '仁川機場 ➜ Grid Inn Hotel',
           tags: ['交通', '機場巴士', '住宿'],
           desc: '抵達首爾後前往飯店。',
-          route: '機場巴士 6002，乘車位置：交通中心B1-30號 ➜【鐘路三街站】；或搭 AREX 至首爾站轉 1 號線。',
+          route: '機場巴士 6002，乘車位置：交通中心B1-30號 ➜【鐘路三街站】；或搭 AREX 【首爾站】轉1號線→ 【鐘路三街站】（15號出口，走路3分鐘）。',
           travelTime: '車程約 85 分鐘',
-          hours: '巴士車資 $17,000/人；AREX 總長 1 小時 35 分',
-          naver: 'https://www.airport.kr/ap_ch/1699/subview.do',
-          booking: '',
+          hours: '巴士車資 $17,000/人',
+          naver: 'https://naver.me/5Z1u0XXU',
+          booking: 'https://www.airport.kr/ap_ch/1699/subview.do',
           embed: 'https://www.google.com/maps?q=Grid%20Inn%20Seoul&output=embed',
           collapsed: true
         },
@@ -1111,11 +1110,11 @@ const defaultItinerary = {
           id: uid(),
           time: '09:30\n10:30',
           title: 'Olive Better',
-          tags: ['購物', '9:00開門'],
+          tags: ['購物', '光化門站'],
           desc: '專注於健康美容與美妝優化的購物空間。',
           route: '走路22分鐘，或搭公車271【鐘路三街.塔谷公園站】➜【鐘路一街.中央站】(13分鐘)。',
           travelTime: '13~22 分鐘',
-          hours: '地址：서울 종로구 청진동 246',
+          hours: '8:00開門；地址：서울 종로구 청진동 246',
           naver: 'https://naver.me/x0X8Dl4d',
           booking: '',
           embed: 'https://www.google.com/maps?q=T1%20Base%20Camp%20Seoul&output=embed',
@@ -1123,14 +1122,14 @@ const defaultItinerary = {
         },
         {
           id: uid(),
-          time: '11:00\n12:00',
-          title: '午餐-쌤쌤쌤',
-          tags: ['美食', '龍山'],
-          desc: '龍理團路知名美式風格排隊早午餐。',
+          time: '10:30\n12:00',
+          title: '早午餐-쌤쌤쌤',
+          tags: ['美食', '黑白大廚', '光化門站', '現場預約'],
+          desc: '黑白大廚知名美式風格排隊早午餐。',
           route: '走路。',
           travelTime: '約 5-10 分鐘',
-          hours: '地址：서울 용산구 한강대로50길 25',
-          naver: 'https://naver.me/IgN9v6u8',
+          hours: '招牌千層麵、地址：서울 종로구 종로3길 17 1층',
+          naver: 'https://naver.me/Goivggyk',
           booking: '',
           embed: '',
           collapsed: true
@@ -1139,11 +1138,11 @@ const defaultItinerary = {
           id: uid(),
           time: '13:00\n14:00',
           title: '阿卉眉毛',
-          tags: ['霧眉美容', '預約制'],
+          tags: ['霧眉美容',  '江南站'],
           desc: '江南區論峴洞208。已與美容師約好。',
-          route: 'UBER(29-35分鐘)、公車741、470【鐘路一街(中央)站】→【新沙-藍色儲蓄銀行站】→公車241【鶴洞站5號出口】(22分鐘)',
+          route: '搭乘UBER(29-35分鐘)；公車741、470【鐘路一街(中央)站】→【新沙-藍色儲蓄銀行站】→公車241【鶴洞站5號出口】(22分鐘)',
           travelTime: '約 20-40 分鐘',
-          hours: '預約時段 13:00-14:00',
+          hours: '預約時段 13:00-14:00、地址：서울 강남구 논현동 208',
           naver: 'https://naver.me/FUhtdVKO',
           booking: '',
           embed: '',
@@ -1153,7 +1152,7 @@ const defaultItinerary = {
           id: uid(),
           time: '14:00\n15:00',
           title: 'T1 Cafe & Arena',
-          tags: ['追星', '江南'],
+          tags: ['追星', '江南站'],
           desc: '英雄聯盟 T1 戰隊主題空間與咖啡廳。',
           route: '搭乘 UBER (約5分鐘，5000韓元) 或地鐵 7 號線【鶴洞站】➜【江南區辦公站】(2號出口)。',
           travelTime: '約 14 分鐘',
@@ -1195,10 +1194,10 @@ const defaultItinerary = {
           id: uid(),
           time: '21:00\n23:00',
           title: '首爾站樂天採購',
-          tags: ['購物', '大賣場'],
-          desc: '前往樂天超市進行大規模補貨與買伴手禮。',
-          route: '漢江公園 ➜ 返回首爾站。',
-          travelTime: '約 20 分鐘',
+          tags: ['購物', '大賣場', '首爾站'],
+          desc: '前往樂天超市補貨與買伴手禮。',
+          route: '搭乘公車740【盤浦漢江公園站】➜【三角地站。韓戰紀念碑】➜公車150、151【首爾站巴士轉乘中心。江與歸起義遺址】。',
+          travelTime: '約 39 分鐘',
           hours: '地址：서울 중구 봉래동2가 122-11',
           naver: 'https://naver.me/IM4VC3hv',
           booking: '',
@@ -1209,29 +1208,29 @@ const defaultItinerary = {
       3: [
         {
           id: uid(),
-          time: '10:30\n13:00',
-          title: '吉伊卡娃購物中心',
-          tags: ['購物', '10:30開幕'],
+          time: '09:30\n11:30',
+          title: '吉伊卡哇購物中心',
+          tags: ['購物', '龍山站', '現場預約'],
           desc: '鎖定熱門的 Chiikawa 潮流選品。',
-          route: '1號線【鐘路三街站】→【龍山站】（2號出口）',
+          route: '搭乘1號線【鐘路三街站】→【龍山站】（2號出口）',
           travelTime: '約 12 分鐘',
-          hours: '地址：서울 영등포구 여의대로 108',
-          naver: 'https://naver.me/5012',
-          booking: '',
+          hours: '10點開放現場預約；地址：서울 영등포구 여의대로 108',
+          naver: 'https://naver.me/5B0WtBUH',
+          booking: 'https://www.instagram.com/chiikawashop_kr',
           embed: 'https://www.google.com/maps?q=Gyeongbokgung%20Palace%20Seoul&output=embed',
           collapsed: true
         },
         {
           id: uid(),
-          time: '13:00\n14:30',
+          time: '12:00\n14:00',
           title: 'PLAVE快閃店',
-          tags: ['追星', '快閃'],
+          tags: ['追星', '快閃', '汝夷島站'],
           desc: '前往 PLAVE 快閃活動地點朝聖。',
-          route: '公車5012【龍山站廣場前】→【現代首爾】',
+          route: '搭乘公車5012【龍山站廣場前】→【現代首爾】',
           travelTime: '約24分鐘',
-          hours: '',
+          hours: '現場預約',
           naver: 'https://naver.me/5tJtlWR8',
-          booking: '',
+          booking: 'https://caligopt2popup.oopy.io/',
           embed: '',
           collapsed: true
         },
@@ -1242,9 +1241,9 @@ const defaultItinerary = {
           tags: ['追星', '咖啡廳'],
           desc: 'PLAVE 應援咖啡廳活動。',
           route: '搭乘公車或地鐵移動至延禧洞。',
-          travelTime: '約 30 分鐘',
+          travelTime: '約 40 分鐘',
           hours: '地址：서울 서대문구 연희동 433-10',
-          naver: 'https://naver.me/FcmA3eDy',
+          naver: 'https://naver.me/GQSMgFx2',
           booking: '',
           embed: '',
           collapsed: true
@@ -1258,7 +1257,7 @@ const defaultItinerary = {
           route: '從延禧洞步行或搭車至延南洞區塊。',
           travelTime: '約 15 分鐘',
           hours: '晚餐美食行程',
-          naver: 'https://naver.me/FW7Yf78J',
+          naver: 'https://naver.me/FcmA3eDy',
           booking: '',
           embed: 'https://www.google.com/maps?q=Hongdae%20Seoul&output=embed',
           collapsed: true
@@ -1267,40 +1266,40 @@ const defaultItinerary = {
       4: [
         {
           id: uid(),
-          time: '08:00\n11:00',
-          title: '景福宮+北村韓屋村',
+          time: '08:00\n11:30',
+          title: '景福宮/仁寺洞+北村韓屋村',
           tags: ['景點', '賞櫻'],
           desc: '08:00 退房寄物。早起走訪景福宮與北村韓屋村觀光與賞櫻。',
           route: '從飯店步行或搭車前往北村。',
           travelTime: '約 15~20 分鐘',
-          hours: '08:00 退房',
-          naver: '',
+          hours: '08:00 退房，行李帶到安國站寄放、地址：서울 종로구 율곡로 45 1층',
+          naver: 'https://naver.me/5UEc0uzr',
           booking: '',
           embed: '',
           collapsed: true
         },
         {
           id: uid(),
-          time: '11:00\n13:00',
+          time: '12:00\n12:30',
           title: 'Teoljjini 小物、拿T1物品',
-          tags: ['購物', '面交'],
-          desc: '重要的 털찐이 (Teoljjini) 小物採買與 T1 物品拿取。',
-          route: '依面交與小物店位置移動。',
+          tags: ['購物', '面交', '惠化站'],
+          desc: '털찐이 (Teoljjini) 娃衣小物與 T1 物品拿取。',
+          route: '依面交與小物店位置移動。叫車UBER或公車162、710、109【昌德宮 我們的聲音博物館站】→【惠化站2號出口】',
           travelTime: '',
-          hours: '',
-          naver: '',
+          hours: '12點開門；叫車6分鐘、公車約 30 分鐘、地址：서울 종로구 낙산길 16 1층 가운데',
+          naver: 'https://naver.me/GNWcN5rD',
           booking: '',
           embed: '',
           collapsed: true
         },
         {
           id: uid(),
-          time: '13:00\n14:30',
-          title: '領行李、搭車',
+          time: '12:30\n14:30',
+          title: '前往仁川機場、寄放行李',
           tags: ['交通', '行李'],
-          desc: '回飯店提領行李，準備前往永宗島。',
-          route: '返回飯店領取寄放的行李並出發。',
-          travelTime: '',
+          desc: '可先預訂直達車票，搭AREX前往仁川機場寄放行李。',
+          route: '搭乘4號線【惠化站】→【首爾站】→轉機場快線【仁川機場站】。',
+          travelTime: '約 2 小時',
           hours: '',
           naver: '',
           booking: '',
@@ -1309,21 +1308,21 @@ const defaultItinerary = {
         },
         {
           id: uid(),
-          time: '14:30\n17:00',
+          time: '14:30\n16:00',
           title: 'INSPIRE Arena',
           tags: ['景點', '活動'],
           desc: '購買DS演唱會周邊。',
           route: '搭乘交通工具前往永宗島 INSPIRE 渡假村。',
           travelTime: '車程約 70~90 分鐘',
-          hours: '依活動現場狀況為準',
-          naver: '',
-          booking: '',
+          hours: '沒有東西就回機場',
+          naver: 'https://naver.me/GBFHZsKm',
+          booking: 'https://www.kmileshow.com/inspire-arena-transportation/',
           embed: '',
           collapsed: true
         },
         {
           id: uid(),
-          time: '17:00\n20:00',
+          time: '16:30\n20:00',
           title: '仁川機場二航報到劃位',
           tags: ['報到', '退稅'],
           desc: '17:00-20:00 抵達仁川機場第二航廈，辦理退稅與報到。',
@@ -1453,7 +1452,7 @@ const defaultItinerary = {
             <div class="route-box">
               <strong>路線規劃</strong>
               <p class="minor">${escapeHtml(item.route || '')}</p>
-              <p class="minor">旅行時間：${escapeHtml(item.travelTime || '')}</p>
+              <p class="minor">交通時間：${escapeHtml(item.travelTime || '')}</p>
             </div>
 
             ${
