@@ -24,7 +24,6 @@
       --muted: #7c7280;
       --line: rgba(217,95,147,.18);
       --shadow: 0 12px 30px rgba(221, 123, 162, .18);
-      --radius: 20px;
     }
 
     * { box-sizing: border-box; }
@@ -257,7 +256,7 @@
       line-height: 1.6;
     }
 
-    .route-box, .map-box, .store-box, .note-box {
+    .route-box, .map-box {
       margin-top: 12px;
       border-radius: 16px;
       background: rgba(255,255,255,.8);
@@ -342,7 +341,7 @@
 
     table {
       width: 100%;
-      min-width: 760px;
+      min-width: 1120px;
       border-collapse: collapse;
     }
 
@@ -359,6 +358,7 @@
       font-size: .9rem;
       position: sticky;
       top: 0;
+      white-space: nowrap;
     }
 
     td {
@@ -399,7 +399,7 @@
 
     .summary-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 12px;
       padding: 0 18px;
     }
@@ -419,7 +419,7 @@
     }
 
     .summary-card .value {
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       font-weight: 900;
       color: var(--rose);
       word-break: break-word;
@@ -506,6 +506,7 @@
       padding: 8px 10px;
       border-radius: 12px;
       border: 1px solid rgba(217,95,147,.12);
+      white-space: nowrap;
     }
 
     .muted-block {
@@ -719,12 +720,15 @@
       <div class="hero-top">
         <div>
           <h1 class="title">🌸 2026 首爾櫻花旅行看板</h1>
-          <p>
-            第 1–4 天行程總覽、內嵌地圖、路線與旅行時間、景點資訊、購物商店清單與購物記帳。
-          </p>
+            <div class="hotel-info">
+              🏨 <strong>Grid Inn Hotel (格瑞德酒店)</strong><br>
+              地址：서울 종로구 종로18길 9-6 (鐘路三街站15號出口)<br>
+              電話：+82 2-2265-2250
+            </div>
         </div>
         <div class="pill-row">
           <div class="pill">住宿：Grid Inn Hotel</div>
+          <div class="pill">新增資料預設匯率：1 KRW ≈ <span id="rateLabel">0.021453</span> TWD</div>
           <div class="pill">自動儲存：已啟用</div>
         </div>
       </div>
@@ -783,13 +787,13 @@
             <div class="section-head">
               <div>
                 <h3>🛍️ 購物記帳</h3>
-                <p class="section-sub">包含項目名稱、日期、付款方式、退稅狀態、韓元 / 台幣與即時匯率。</p>
+                <p class="section-sub">每筆資料可保存獨立匯率與台幣實付。預設匯率只影響新資料，不會回頭改變舊資料。</p>
               </div>
             </div>
 
             <div class="action-row">
               <div class="helper">
-                匯率可手動修改，所有金額會即時換算並自動儲存到瀏覽器。
+                建議用法：先輸入韓元與匯率看估算台幣，等信用卡入帳後再填「台幣實付」。
               </div>
               <button class="small-btn" onclick="clearShopping()">清空記帳</button>
             </div>
@@ -803,7 +807,9 @@
                     <th>付款方式</th>
                     <th>退稅狀態</th>
                     <th>金額 (KRW)</th>
-                    <th>金額 (TWD)</th>
+                    <th>匯率</th>
+                    <th>估算 TWD</th>
+                    <th>台幣實付</th>
                     <th>刪除</th>
                   </tr>
                 </thead>
@@ -814,7 +820,7 @@
             <div class="action-row">
               <button class="primary-btn" onclick="addShoppingRow()">＋ 新增購物項目</button>
               <div style="min-width: 220px; flex: 1 1 220px;">
-                <label class="helper" for="exchangeRateInput">即時匯率（1 KRW = TWD）</label>
+                <label class="helper" for="exchangeRateInput">新增資料預設匯率（1 KRW = TWD）</label>
                 <input id="exchangeRateInput" type="number" step="0.000001" value="0.0214532" oninput="updateExchangeRate(this.value)">
               </div>
             </div>
@@ -829,8 +835,12 @@
                 <div class="value" id="totalKRW">0</div>
               </div>
               <div class="summary-card">
-                <div class="label">總計 TWD</div>
-                <div class="value" id="totalTWD">0</div>
+                <div class="label">估算 TWD</div>
+                <div class="value" id="totalEstimatedTWD">0</div>
+              </div>
+              <div class="summary-card">
+                <div class="label">實付 TWD</div>
+                <div class="value" id="totalPaidTWD">0</div>
               </div>
             </div>
           </section>
@@ -982,10 +992,10 @@
 
   <script>
     const STORAGE = {
-      shopping: 'seoul_sakura_shopping_v3',
-      stores: 'seoul_sakura_store_list_v3',
-      exchangeRate: 'seoul_sakura_exchange_rate_v3',
-      itinerary: 'seoul_sakura_itinerary_v3'
+      shopping: 'seoul_sakura_shopping_v4',
+      stores: 'seoul_sakura_store_list_v4',
+      exchangeRate: 'seoul_sakura_exchange_rate_v4',
+      itinerary: 'seoul_sakura_itinerary_v4'
     };
 
     let exchangeRate = parseFloat(localStorage.getItem(STORAGE.exchangeRate)) || 0.0214532;
@@ -1086,7 +1096,9 @@
       date: new Date().toISOString().slice(0, 10),
       payment: '信用卡',
       tax: '無',
-      krw: ''
+      krw: '',
+      rate: exchangeRate,
+      paidTwd: ''
     });
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -1136,7 +1148,6 @@
       exchangeRate = parseFloat(val) || 0;
       localStorage.setItem(STORAGE.exchangeRate, exchangeRate);
       document.getElementById('rateLabel').textContent = Number(exchangeRate).toFixed(6);
-      recalcShopping();
     }
 
     function renderAllItineraries() {
@@ -1321,6 +1332,10 @@
       const tbody = document.getElementById('shoppingBody');
       const tr = document.createElement('tr');
 
+      const rowRate = (data.rate !== undefined && data.rate !== null && data.rate !== '')
+        ? data.rate
+        : exchangeRate;
+
       tr.innerHTML = `
         <td><input type="text" class="shop-name" value="${escapeAttr(data.name || '')}" placeholder="例如：Olive Young 面膜" oninput="saveShopping()"></td>
         <td><input type="date" class="shop-date" value="${escapeAttr(data.date || '')}" onchange="saveShopping()"></td>
@@ -1339,12 +1354,14 @@
           </select>
         </td>
         <td><input type="number" class="shop-krw" value="${escapeAttr(data.krw || '')}" placeholder="0" oninput="saveShopping()"></td>
-        <td class="shop-twd">0</td>
+        <td><input type="number" class="shop-rate" step="0.000001" value="${escapeAttr(rowRate)}" placeholder="0.021453" oninput="saveShopping()"></td>
+        <td class="shop-estimated-twd">0</td>
+        <td><input type="number" class="shop-paid-twd" value="${escapeAttr(data.paidTwd || '')}" placeholder="未入帳可先留空" oninput="saveShopping()"></td>
         <td><button class="delete-btn" onclick="deleteShoppingRow(this)">刪除</button></td>
       `;
 
       tbody.appendChild(tr);
-      updateRowTWD(tr);
+      updateRowValues(tr);
     }
 
     function addShoppingRow() {
@@ -1361,25 +1378,31 @@
       saveShopping();
     }
 
-    function updateRowTWD(row) {
+    function updateRowValues(row) {
       const krw = parseFloat(row.querySelector('.shop-krw').value) || 0;
-      const twd = krw * exchangeRate;
-      row.querySelector('.shop-twd').textContent = twd.toLocaleString('zh-TW', {
+      const rate = parseFloat(row.querySelector('.shop-rate').value) || 0;
+      const estimatedTwd = krw * rate;
+      const paidTwd = parseFloat(row.querySelector('.shop-paid-twd').value) || 0;
+
+      row.querySelector('.shop-estimated-twd').textContent = estimatedTwd.toLocaleString('zh-TW', {
         maximumFractionDigits: 0
       });
-      return { krw, twd };
+
+      return { krw, rate, estimatedTwd, paidTwd };
     }
 
     function saveShopping() {
       const data = [];
       document.querySelectorAll('#shoppingBody tr').forEach(row => {
-        updateRowTWD(row);
+        updateRowValues(row);
         data.push({
           name: row.querySelector('.shop-name').value,
           date: row.querySelector('.shop-date').value,
           payment: row.querySelector('.shop-payment').value,
           tax: row.querySelector('.shop-tax').value,
-          krw: row.querySelector('.shop-krw').value
+          krw: row.querySelector('.shop-krw').value,
+          rate: row.querySelector('.shop-rate').value,
+          paidTwd: row.querySelector('.shop-paid-twd').value
         });
       });
       localStorage.setItem(STORAGE.shopping, JSON.stringify(data));
@@ -1388,19 +1411,22 @@
 
     function recalcShopping() {
       let totalKRW = 0;
-      let totalTWD = 0;
+      let totalEstimatedTWD = 0;
+      let totalPaidTWD = 0;
       let totalItems = 0;
 
       document.querySelectorAll('#shoppingBody tr').forEach(row => {
-        const result = updateRowTWD(row);
+        const result = updateRowValues(row);
         totalKRW += result.krw;
-        totalTWD += result.twd;
+        totalEstimatedTWD += result.estimatedTwd;
+        totalPaidTWD += result.paidTwd;
         totalItems += 1;
       });
 
       document.getElementById('totalItems').textContent = totalItems.toLocaleString('zh-TW');
       document.getElementById('totalKRW').textContent = totalKRW.toLocaleString('zh-TW', { maximumFractionDigits: 0 });
-      document.getElementById('totalTWD').textContent = totalTWD.toLocaleString('zh-TW', { maximumFractionDigits: 0 });
+      document.getElementById('totalEstimatedTWD').textContent = totalEstimatedTWD.toLocaleString('zh-TW', { maximumFractionDigits: 0 });
+      document.getElementById('totalPaidTWD').textContent = totalPaidTWD.toLocaleString('zh-TW', { maximumFractionDigits: 0 });
     }
 
     function clearShopping() {
